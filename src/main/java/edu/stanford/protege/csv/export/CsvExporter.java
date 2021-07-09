@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectIntersectionOfImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLObjectUnionOfImpl;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -295,10 +296,21 @@ public class CsvExporter {
         			fillerList.add(filler.get());
         		}
         	}
+        } else if (ce instanceof OWLObjectUnionOfImpl) {
+        	OWLObjectUnionOfImpl oiof = (OWLObjectUnionOfImpl)ce;
+        	List<OWLClassExpression> operands = oiof.getOperandsAsList();
+        	for (OWLClassExpression operand : operands) {
+        		filler = getFillerForAxiom( operand, entity, property);
+        		if( filler.isPresent()) {
+        			fillerList.add(filler.get());
+        		}
+        	}
         }
         else {
         	filler = getFillerForAxiom(ce, entity, property);
-        	fillerList.add(filler.get());
+        	if (filler.isPresent()) {
+        		fillerList.add(filler.get());
+        	}
         }
         return fillerList;
     }
