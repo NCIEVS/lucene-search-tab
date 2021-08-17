@@ -118,6 +118,7 @@ public class IndexDelegator implements Disposable {
             for (Term term : terms) {
                 builder.add(new TermQuery(term), Occur.MUST);
             }
+            indexWriter.flush();
             indexWriter.deleteDocuments(builder.build());
         }
         commitIndex();

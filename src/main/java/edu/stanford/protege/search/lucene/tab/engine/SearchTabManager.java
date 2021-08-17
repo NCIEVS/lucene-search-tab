@@ -129,10 +129,25 @@ public class SearchTabManager extends LuceneSearcher {
     private void updatingIndex(List<? extends OWLOntologyChange> changes) {
         logger.info("Updating index with " + changes.size() + " change(s)");
         try {
-            RemoveChangeSet removeChangeSet = RemoveChangeSet.create(changes, new SearchTabRemoveChangeSetHandler(editorKit));
-            indexer.doRemove(indexDelegator, removeChangeSet);
-            AddChangeSet addChangeSet = AddChangeSet.create(changes, new SearchTabAddChangeSetHandler(editorKit));
-            indexer.doAppend(indexDelegator, addChangeSet);
+        	
+        	List<OWLOntologyChange> temp = new ArrayList<OWLOntologyChange>();
+        	for (OWLOntologyChange c : changes) {
+        		temp.add(c);
+        		if (c instanceof RemoveAxiom) {
+        			RemoveChangeSet removeChangeSet = RemoveChangeSet.create(temp, new SearchTabRemoveChangeSetHandler(editorKit));
+                    indexer.doRemove(indexDelegator, removeChangeSet);
+        			
+        		}
+        		if (c instanceof AddAxiom) {
+        			AddChangeSet addChangeSet = AddChangeSet.create(temp, new SearchTabAddChangeSetHandler(editorKit));
+                    indexer.doAppend(indexDelegator, addChangeSet);
+        			
+        		}
+        		temp.clear();        		
+        	}
+        	
+            
+            
         }
         catch (IOException e) {
             logger.error("... update index failed");
