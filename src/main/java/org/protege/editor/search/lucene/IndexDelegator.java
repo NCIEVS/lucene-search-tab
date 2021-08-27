@@ -117,9 +117,9 @@ public class IndexDelegator implements Disposable {
             BooleanQuery.Builder builder = new BooleanQuery.Builder();
             for (Term term : terms) {
                 builder.add(new TermQuery(term), Occur.MUST);
-            }
-            indexWriter.flush();
+            }            
             indexWriter.deleteDocuments(builder.build());
+            indexWriter.flush();
         }
         commitIndex();
     }
