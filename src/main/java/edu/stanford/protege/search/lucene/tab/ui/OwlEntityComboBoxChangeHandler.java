@@ -1,7 +1,6 @@
 package edu.stanford.protege.search.lucene.tab.ui;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.OWLOntologyChangeVisitor;
 
 public class OwlEntityComboBoxChangeHandler implements OWLOntologyChangeVisitor {
 
@@ -32,4 +31,10 @@ public class OwlEntityComboBoxChangeHandler implements OWLOntologyChangeVisitor 
             }
         }
     }
+
+	@Override
+	public void visit(ReplaceOntologyPrefixMappingChange replaceOntologyPrefixMappingChange) {
+		// TODO Auto-generated method stub
+		
+	}
 }
