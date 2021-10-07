@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.ReplaceOntologyPrefixMappingChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeVisitor;
 
 import java.util.ArrayList;
@@ -100,4 +101,10 @@ public class RemoveChangeSetHandler implements OWLOntologyChangeVisitor {
     protected String getAnnotationText(OWLAnnotation annotation) {
         return styledStringRenderer.getRendering(annotation).getString();
     }
+
+	@Override
+	public void visit(ReplaceOntologyPrefixMappingChange change) {
+		// TODO Auto-generated method stub
+		
+	}
 }

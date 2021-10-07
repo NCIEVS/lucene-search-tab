@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntologyChangeVisitor;
+import org.semanticweb.owlapi.model.ReplaceOntologyPrefixMappingChange;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -104,4 +105,10 @@ public class AddChangeSetHandler implements OWLOntologyChangeVisitor {
     protected String getAnnotationText(OWLAnnotation annotation) {
         return styledStringRenderer.getRendering(annotation).getString();
     }
+
+	@Override
+	public void visit(ReplaceOntologyPrefixMappingChange change) {
+		// TODO Auto-generated method stub
+		
+	}
 }
