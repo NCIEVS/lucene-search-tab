@@ -127,6 +127,7 @@ public class IndexDelegator implements Disposable {
     @Override
     public void dispose() throws IOException {
         if (isOpen(indexWriter)) {
+        	indexWriter.commit();
             indexWriter.close();
             directory.close();
             if (currentReader != null) {
