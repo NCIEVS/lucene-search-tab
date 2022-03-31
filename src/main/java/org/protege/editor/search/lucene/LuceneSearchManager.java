@@ -161,7 +161,8 @@ public class LuceneSearchManager extends LuceneSearcher {
         }
     }
 
-    public void updateIndex(List<? extends OWLOntologyChange> changes) {
+    public void updateIndex(List<? extends OWLOntologyChange> changes,
+    		boolean... bs) {
         if (indexDelegator != null) {
             logger.info("Updating index from " + changes.size() + " change(s)");
             service.submit(() -> updatingIndex(changes));
@@ -483,4 +484,6 @@ public class LuceneSearchManager extends LuceneSearcher {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 }

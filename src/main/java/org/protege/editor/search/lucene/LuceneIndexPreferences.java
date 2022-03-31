@@ -40,6 +40,7 @@ public class LuceneIndexPreferences {
     public static final String BASE_DIR = "BASE_DIR";
     public static final String INDEX_RECORD_KEYS = "INDEX_RECORD_KEYS";
     public static final String MAX_SIZE_FOR_IN_MEMORY_STORING = "MAX_SIZE_FOR_IN_MEMORY_STORING";
+    public static final String SERVER_CHANGES_PROCESSED = "SERVER_CHANGES_ALREADY_PROCESSED";
 
     public static final String PREFIX_INDEX_DIR = "ProtegeIndex";
 
@@ -143,6 +144,20 @@ public class LuceneIndexPreferences {
      */
     public static void setMaxSizeForInMemoryIndexStoring(int fileSize) {
         getPreferences().putLong(MAX_SIZE_FOR_IN_MEMORY_STORING, fileSize);
+    }
+
+    /**
+     * Gets the maximum size of the ontology file for storing the index files
+     * in the memory.
+     *
+     * @return The file size in megabytes.
+     */
+    public static int getNoServerChangesIndexed() {
+        return getPreferences().getInt(SERVER_CHANGES_PROCESSED, 0);
+    }
+    
+    public static void setNoServerChangesIndexed(int no_changes) {
+        getPreferences().putInt(SERVER_CHANGES_PROCESSED, no_changes);
     }
 
     /**

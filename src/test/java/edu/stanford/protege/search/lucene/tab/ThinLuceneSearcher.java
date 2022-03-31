@@ -82,7 +82,8 @@ public class ThinLuceneSearcher extends LuceneSearcher {
 	}
 
 	@Override
-	public void updateIndex(List<? extends OWLOntologyChange> changes) {
+	public void updateIndex(List<? extends OWLOntologyChange> changes,
+			boolean...bs) {
 		// TODO Auto-generated method stub
 		
 	}

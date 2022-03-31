@@ -80,7 +80,7 @@ public class SearchTabManager extends LuceneSearcher {
         ontologyChangedListener = this::handleModelManagerEvent;
         updateIndexListener = changes -> updateIndex(changes);
         editorKit.getOWLModelManager().addListener(ontologyChangedListener);
-        editorKit.getOWLModelManager().addOntologyChangeListener(updateIndexListener);
+        //editorKit.getOWLModelManager().addOntologyChangeListener(updateIndexListener);
         initSearchContext();
         initIndex();
     }
@@ -120,10 +120,40 @@ public class SearchTabManager extends LuceneSearcher {
         initIndex();
     }
 
-    public void updateIndex(List<? extends OWLOntologyChange> changes) {
-        if (indexDelegator != null) {
-            service.submit(() -> updatingIndex(changes));
-        }
+    public void updateIndex(List<? extends OWLOntologyChange> changes, boolean... bs) {
+    	
+    	List<OWLOntologyChange> to_process = new ArrayList<OWLOntologyChange>();
+    	if (bs.length > 0) {
+    		int no_changes = LuceneIndexPreferences.getNoServerChangesIndexed();
+    		if (no_changes > changes.size()) {
+    			// a squash occurred
+    			if (indexDelegator != null) {
+    				service.submit(() -> updatingIndex(changes));
+    			}
+    		} else {
+    			for (int i = 0; i < changes.size(); i++) {
+    				if (no_changes > 0) {
+    					if (i < no_changes) {
+    						// nothing don't process
+    					} else {
+    						to_process.add(changes.get(i));
+    					}
+    				} else {
+    					to_process.add(changes.get(i));
+    				}
+    			}
+    			updatingIndex(to_process);
+    		}
+    		LuceneIndexPreferences.setNoServerChangesIndexed(changes.size());
+    	} else {
+    		if (indexDelegator != null) {
+    			service.submit(() -> updatingIndex(changes));
+    		}
+        	
+    	}
+    	
+    	
+        
     }
 
     private void updatingIndex(List<? extends OWLOntologyChange> changes) {
@@ -491,4 +521,6 @@ public class SearchTabManager extends LuceneSearcher {
 		editorKit.getOWLModelManager().removeOntologyChangeListener(updateIndexListener);
 		
 	}
+
+	
 }
