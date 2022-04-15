@@ -148,6 +148,7 @@ public class IndexDelegator implements Disposable {
     public void commitIndex() throws IOException {
         if (isOpen(indexWriter)) {
             indexWriter.commit();
+            indexWriter.flush();
             indexDirty = true;
         }
     }

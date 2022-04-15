@@ -92,64 +92,66 @@ public class SearchTabRemoveChangeSetHandler extends RemoveChangeSetHandler impl
 
     @Override
     public void visit(OWLAnnotationAssertionAxiom axiom) {
-        if (axiom.getSubject() instanceof IRI) {
-            List<Term> terms = new ArrayList<>();
-            OWLEntity entity = getOWLEntity((IRI) axiom.getSubject());
-            terms.add(new Term(IndexField.ENTITY_IRI, getIri(entity)));
-            //terms.add(new Term(IndexField.DISPLAY_NAME, getDisplayName(entity)));
-            terms.add(new Term(IndexField.ANNOTATION_IRI, getIri(axiom.getProperty())));
-            //terms.add(new Term(IndexField.ANNOTATION_DISPLAY_NAME, getDisplayName(axiom.getProperty())));
-            
-            
-            OWLAnnotationValue value = axiom.getAnnotation().getValue();
-            if (value instanceof OWLLiteral) {
-                OWLLiteral literal = (OWLLiteral) value;
-                if (literal.getDatatype().getIRI().equals(XSDVocabulary.ANY_URI.getIRI())) {
-                    terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, literal.getLiteral()));
-                }
-                else {
-                    terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
-                    terms.add(new Term(IndexField.ANNOTATION_FULL_TEXT, 
-                    		literal.getLiteral().trim().toLowerCase()));
-                }
-            }
-            else if (value instanceof IRI) {
-                IRI iri = (IRI) value;
-                terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, iri.toString()));
-            }
-            
-            removeFilters.add(terms);
-            
-            for (OWLAnnotation ann : axiom.getAnnotations()) {
-            	
-            	terms = new ArrayList<>();
-            	terms.add(new Term(IndexField.ENTITY_IRI, getIri(entity)));
-                //terms.add(new Term(IndexField.DISPLAY_NAME, getDisplayName(entity)));
-                
-                terms.add(new Term(IndexField.ANNOTATION_IRI, getIri(ann.getProperty())));
-                //terms.add(new Term(IndexField.ANNOTATION_DISPLAY_NAME, getDisplayName(ann.getProperty())));
-               
-                value = ann.getValue();
-                if (value instanceof OWLLiteral) {
-                    OWLLiteral literal = (OWLLiteral) value;
-                    if (literal.getDatatype().getIRI().equals(XSDVocabulary.ANY_URI.getIRI())) {
-                        terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, literal.getLiteral()));
-                    }
-                    else {
-                        terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
-                        terms.add(new Term(IndexField.ANNOTATION_FULL_TEXT, 
-                        		literal.getLiteral().trim().toLowerCase()));
-                    }
-                }
-                else if (value instanceof IRI) {
-                    IRI iri = (IRI) value;
-                    terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, iri.toString()));
-                }
-                removeFilters.add(terms);
-            	
-            }
-            
-        }
+    	if (axiom.getSubject() instanceof IRI) {
+    		List<Term> terms = new ArrayList<>();
+    		OWLEntity entity = getOWLEntity((IRI) axiom.getSubject());
+    		if (entity != null) {
+    			terms.add(new Term(IndexField.ENTITY_IRI, getIri(entity)));
+    			//terms.add(new Term(IndexField.DISPLAY_NAME, getDisplayName(entity)));
+    			terms.add(new Term(IndexField.ANNOTATION_IRI, getIri(axiom.getProperty())));
+    			//terms.add(new Term(IndexField.ANNOTATION_DISPLAY_NAME, getDisplayName(axiom.getProperty())));
+
+
+    			OWLAnnotationValue value = axiom.getAnnotation().getValue();
+    			if (value instanceof OWLLiteral) {
+    				OWLLiteral literal = (OWLLiteral) value;
+    				if (literal.getDatatype().getIRI().equals(XSDVocabulary.ANY_URI.getIRI())) {
+    					terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, literal.getLiteral()));
+    				}
+    				else {
+    					terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
+    					terms.add(new Term(IndexField.ANNOTATION_FULL_TEXT, 
+    							literal.getLiteral().trim().toLowerCase()));
+    				}
+    			}
+    			else if (value instanceof IRI) {
+    				IRI iri = (IRI) value;
+    				terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, iri.toString()));
+    			}
+
+    			removeFilters.add(terms);
+
+    			for (OWLAnnotation ann : axiom.getAnnotations()) {
+
+    				terms = new ArrayList<>();
+    				terms.add(new Term(IndexField.ENTITY_IRI, getIri(entity)));
+    				//terms.add(new Term(IndexField.DISPLAY_NAME, getDisplayName(entity)));
+
+    				terms.add(new Term(IndexField.ANNOTATION_IRI, getIri(ann.getProperty())));
+    				//terms.add(new Term(IndexField.ANNOTATION_DISPLAY_NAME, getDisplayName(ann.getProperty())));
+
+    				value = ann.getValue();
+    				if (value instanceof OWLLiteral) {
+    					OWLLiteral literal = (OWLLiteral) value;
+    					if (literal.getDatatype().getIRI().equals(XSDVocabulary.ANY_URI.getIRI())) {
+    						terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, literal.getLiteral()));
+    					}
+    					else {
+    						terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
+    						terms.add(new Term(IndexField.ANNOTATION_FULL_TEXT, 
+    								literal.getLiteral().trim().toLowerCase()));
+    					}
+    				}
+    				else if (value instanceof IRI) {
+    					IRI iri = (IRI) value;
+    					terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, iri.toString()));
+    				}
+    				removeFilters.add(terms);
+
+    			}
+    		}
+
+    	}
     }
 
     @Override

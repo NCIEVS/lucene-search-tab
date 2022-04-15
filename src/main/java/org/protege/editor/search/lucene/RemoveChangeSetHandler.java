@@ -77,7 +77,14 @@ public class RemoveChangeSetHandler implements OWLOntologyChangeVisitor {
     }
 
     protected OWLEntity getOWLEntity(IRI identifier) {
-        return entityFinder.getEntities(identifier).stream().findFirst().get();
+    	if (entityFinder.getEntities(identifier).stream()
+    			.findFirst().isPresent()) {
+    		return entityFinder.getEntities(identifier).stream()
+        			.findFirst().get();
+    		
+    	} else {
+    		return null;
+    	}
     }
 
     protected String getIri(OWLEntity entity) {
