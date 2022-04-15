@@ -80,7 +80,7 @@ public class SearchTabManager extends LuceneSearcher {
         ontologyChangedListener = this::handleModelManagerEvent;
         updateIndexListener = changes -> updateIndex(changes);
         editorKit.getOWLModelManager().addListener(ontologyChangedListener);
-        //editorKit.getOWLModelManager().addOntologyChangeListener(updateIndexListener);
+        editorKit.getOWLModelManager().addOntologyChangeListener(updateIndexListener);
         initSearchContext();
         initIndex();
     }
@@ -120,6 +120,7 @@ public class SearchTabManager extends LuceneSearcher {
         initIndex();
     }
 
+    /**
     public void updateIndex(List<? extends OWLOntologyChange> changes, boolean... bs) {
     	
     	List<OWLOntologyChange> to_process = new ArrayList<OWLOntologyChange>();
@@ -148,6 +149,12 @@ public class SearchTabManager extends LuceneSearcher {
     	} else {
     		if (indexDelegator != null) {
     			service.submit(() -> updatingIndex(changes));
+    			try {
+					indexDelegator.commitIndex();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
     		}
         	
     	}
@@ -155,8 +162,9 @@ public class SearchTabManager extends LuceneSearcher {
     	
         
     }
+    **/
 
-    private void updatingIndex(List<? extends OWLOntologyChange> changes) {
+    public void updateIndex(List<? extends OWLOntologyChange> changes) {
         logger.info("Updating index with " + changes.size() + " change(s)");
         try {
         	
@@ -179,7 +187,8 @@ public class SearchTabManager extends LuceneSearcher {
             
             
         }
-        catch (IOException e) {
+        catch (Exception e) {
+        	e.printStackTrace();
             logger.error("... update index failed");
         }
     }
@@ -522,5 +531,6 @@ public class SearchTabManager extends LuceneSearcher {
 		
 	}
 
+	
 	
 }
