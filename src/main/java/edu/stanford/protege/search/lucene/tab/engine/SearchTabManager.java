@@ -119,51 +119,7 @@ public class SearchTabManager extends LuceneSearcher {
         removeIndexDirectory();
         initIndex();
     }
-
-    /**
-    public void updateIndex(List<? extends OWLOntologyChange> changes, boolean... bs) {
-    	
-    	List<OWLOntologyChange> to_process = new ArrayList<OWLOntologyChange>();
-    	if (bs.length > 0) {
-    		int no_changes = LuceneIndexPreferences.getNoServerChangesIndexed();
-    		if (no_changes > changes.size()) {
-    			// a squash occurred
-    			if (indexDelegator != null) {
-    				service.submit(() -> updatingIndex(changes));
-    			}
-    		} else {
-    			for (int i = 0; i < changes.size(); i++) {
-    				if (no_changes > 0) {
-    					if (i < no_changes) {
-    						// nothing don't process
-    					} else {
-    						to_process.add(changes.get(i));
-    					}
-    				} else {
-    					to_process.add(changes.get(i));
-    				}
-    			}
-    			updatingIndex(to_process);
-    		}
-    		LuceneIndexPreferences.setNoServerChangesIndexed(changes.size());
-    	} else {
-    		if (indexDelegator != null) {
-    			service.submit(() -> updatingIndex(changes));
-    			try {
-					indexDelegator.commitIndex();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-        	
-    	}
-    	
-    	
-        
-    }
-    **/
-
+    
     public void updateIndex(List<? extends OWLOntologyChange> changes) {
         logger.info("Updating index with " + changes.size() + " change(s)");
         try {
@@ -192,6 +148,7 @@ public class SearchTabManager extends LuceneSearcher {
             logger.error("... update index failed");
         }
     }
+    
 
     private void markIndexAsStale() {
         lastSearchId.set(0);
