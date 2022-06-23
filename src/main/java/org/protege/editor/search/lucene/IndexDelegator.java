@@ -105,23 +105,29 @@ public class IndexDelegator implements Disposable {
        
     }
 
-    public void appendIndex(AddChangeSet changeSet) throws IOException {
+    public void appendIndex(AddChangeSet changeSet, 
+    		boolean commitAtEnd) throws IOException {
         for (Document doc : changeSet) {
             indexWriter.addDocument(doc);
         }
-        commitIndex();
+        if (!commitAtEnd) {
+        	commitIndex();
+        }
     }
 
-    public void removeIndex(RemoveChangeSet changeSet) throws IOException {
-        for (List<Term> terms : changeSet) {
-            BooleanQuery.Builder builder = new BooleanQuery.Builder();
-            for (Term term : terms) {
-                builder.add(new TermQuery(term), Occur.MUST);
-            }            
-            indexWriter.deleteDocuments(builder.build());
-            indexWriter.flush();
-        }
-        commitIndex();
+    public void removeIndex(RemoveChangeSet changeSet,
+    		boolean commitAtEnd) throws IOException {
+    	for (List<Term> terms : changeSet) {
+    		BooleanQuery.Builder builder = new BooleanQuery.Builder();
+    		for (Term term : terms) {
+    			builder.add(new TermQuery(term), Occur.MUST);
+    		}            
+    		indexWriter.deleteDocuments(builder.build());
+    		indexWriter.flush();
+    	}
+    	if (!commitAtEnd) {
+    		commitIndex();
+    	}
     }
 
     @Override
@@ -148,7 +154,6 @@ public class IndexDelegator implements Disposable {
     public void commitIndex() throws IOException {
         if (isOpen(indexWriter)) {
             indexWriter.commit();
-            indexWriter.flush();
             indexDirty = true;
         }
     }

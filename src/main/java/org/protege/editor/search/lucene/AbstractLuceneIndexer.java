@@ -53,12 +53,14 @@ public abstract class AbstractLuceneIndexer implements OWLObjectVisitor {
         delegator.commitIndex();
     }
 
-    public void doAppend(IndexDelegator delegator, AddChangeSet changeSet) throws IOException {
-        delegator.appendIndex(changeSet);
+    public void doAppend(IndexDelegator delegator, AddChangeSet changeSet, 
+    		boolean commitAtEnd) throws IOException {
+        delegator.appendIndex(changeSet, commitAtEnd);
     }
 
-    public void doRemove(IndexDelegator delegator, RemoveChangeSet changeSet) throws IOException {
-        delegator.removeIndex(changeSet);
+    public void doRemove(IndexDelegator delegator, RemoveChangeSet changeSet,
+    		boolean commitAtEnd) throws IOException {
+        delegator.removeIndex(changeSet, commitAtEnd);
     }
 
     public interface IndexProgressListener {

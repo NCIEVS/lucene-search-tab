@@ -124,27 +124,34 @@ public class SearchTabManager extends LuceneSearcher {
         logger.info("Updating index with " + changes.size() + " change(s)");
         try {
         	
+        	boolean commitAtEnd = changes.size() > 10;
+        	
+        	
         	List<OWLOntologyChange> temp = new ArrayList<OWLOntologyChange>();
         	for (OWLOntologyChange c : changes) {
         		temp.add(c);
         		if (c instanceof RemoveAxiom) {
         			RemoveChangeSet removeChangeSet = RemoveChangeSet.create(temp, new SearchTabRemoveChangeSetHandler(editorKit));
-                    indexer.doRemove(indexDelegator, removeChangeSet);
+                    indexer.doRemove(indexDelegator, removeChangeSet, commitAtEnd);
         			
         		}
         		if (c instanceof AddAxiom) {
         			AddChangeSet addChangeSet = AddChangeSet.create(temp, new SearchTabAddChangeSetHandler(editorKit));
-                    indexer.doAppend(indexDelegator, addChangeSet);
+                    indexer.doAppend(indexDelegator, addChangeSet, commitAtEnd);
         			
         		}
         		temp.clear();        		
+        	}
+        	
+        	if (commitAtEnd) {
+        		indexDelegator.commitIndex();
         	}
         	
             
             
         }
         catch (Exception e) {
-        	e.printStackTrace();
+        	logger.info(e.getMessage());
             logger.error("... update index failed");
         }
     }

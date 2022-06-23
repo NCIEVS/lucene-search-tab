@@ -170,10 +170,16 @@ public class LuceneSearchManager extends LuceneSearcher {
 
     private void updatingIndex(List<? extends OWLOntologyChange> changes) {
         try {
+        	boolean commitAtEnd = changes.size() > 10;
+        	
             RemoveChangeSet removeChangeSet = RemoveChangeSet.create(changes, new RemoveChangeSetHandler(editorKit));
-            indexer.doRemove(indexDelegator, removeChangeSet);
+            indexer.doRemove(indexDelegator, removeChangeSet, commitAtEnd);
             AddChangeSet addChangeSet = AddChangeSet.create(changes, new AddChangeSetHandler(editorKit));
-            indexer.doAppend(indexDelegator, addChangeSet);
+            indexer.doAppend(indexDelegator, addChangeSet, commitAtEnd);
+            
+            if (commitAtEnd) {
+        		indexDelegator.commitIndex();
+        	}
         }
         catch (IOException e) {
             logger.error("... update index failed");
