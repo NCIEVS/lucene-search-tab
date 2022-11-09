@@ -125,6 +125,19 @@ public class LuceneSearchManager extends LuceneSearcher {
         editorKit.getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
         editorKit.getModelManager().addListener(modelManagerListener);
         initializeIndex();
+        Thread shutdownListener = new Thread(){
+        	final IndexDelegator idxd = indexDelegator;
+            public void run(){
+                
+                try {
+                	idxd.dispose();               	
+                    
+                } catch (IOException e) {
+                	e.printStackTrace();
+                }
+            }
+        };
+        Runtime.getRuntime().addShutdownHook(shutdownListener);
     }
 
     private void initializeIndex() {
