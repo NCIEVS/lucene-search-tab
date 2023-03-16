@@ -805,12 +805,6 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
                 else if (highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
                     highlightPropertyIfUnsatisfiable(curEntity, doc, tokenStartIndex, tokenLength);
                 }
-                if(OWLUtilities.isDeprecated(owlEditorKit.getOWLModelManager(), curEntity)) {
-                    setStrikeThrough(true);
-                }
-                else {
-                    setStrikeThrough(false);
-                }
                 strikeoutEntityIfCrossedOut(curEntity, doc, tokenStartIndex, tokenLength);
 
                 if (renderLinks) {
