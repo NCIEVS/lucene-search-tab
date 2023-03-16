@@ -105,9 +105,7 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
     private Set<String> unsatisfiableNames;
 
     private Set<String> boxedNames;
-
-//    private int plainFontHeight;
-
+    
     private boolean opaque = false;
     
     private UserRendering user_render = null;
@@ -339,8 +337,6 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
         setupLinkedObjectComponent(table, table.getCellRect(row, column, true));
         preferredWidth = table.getParent().getWidth();
         componentBeingRendered = table;
-        // Set the size of the table cell
-//        setPreferredWidth(table.getColumnModel().getColumn(column).getWidth());
         return prepareRenderer(value, isSelected, hasFocus);
     }
 
@@ -357,7 +353,6 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
         setupLinkedObjectComponent(tree, cellBounds);
         preferredWidth = -1;
         minTextHeight = 12;
-//        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
         tree.setToolTipText(value != null ? value.toString() : "");
         Component c = prepareRenderer(value, selected, hasFocus);
         reset();
@@ -385,8 +380,7 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
         if (preferredWidth == 0) {
         	preferredWidth = -1;
         }
-//        preferredWidth = -1;
-//        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
+        
         setupLinkedObjectComponent(list, cellBounds);
         Component c = prepareRenderer(value, isSelected, cellHasFocus);
         reset();
@@ -606,10 +600,8 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
             StyleConstants.setBold(s, true);
         }
         plainStyle = doc.addStyle("PLAIN_STYLE", null);
-//        StyleConstants.setForeground(plainStyle, Color.BLACK);
         StyleConstants.setItalic(plainStyle, false);
         StyleConstants.setSpaceAbove(plainStyle, 0);
-//        StyleConstants.setFontFamily(plainStyle, textPane.getFont().getFamily());
 
         boldStyle = doc.addStyle("BOLD_STYLE", null);
         StyleConstants.setBold(boldStyle, true);
@@ -669,9 +661,7 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
         if (commentedOut) {
             textPane.setText("// " + textPane.getText());
         }
-//        textPane.setSize(textPane.getPreferredSize());
         StyledDocument doc = textPane.getStyledDocument();
-//        doc.setParagraphAttributes(0, doc.getLength(), linespacingStyle, false);
         resetStyles(doc);
 
         if (selected) {
@@ -736,7 +726,6 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
         // Highlight text
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n\t'", true);
         linkRendered = false;
-        annotURIRendered = false;
         int tokenStartIndex = 0;
         while (tokenizer.hasMoreTokens()) {
             // Get the token and determine if it is a keyword or
@@ -761,7 +750,6 @@ public class IncQualsOWLCellRenderer implements TableCellRenderer, TreeCellRende
     }
 
 
-    private boolean annotURIRendered = false;
     private boolean linkRendered = false;
     private boolean parenthesisRendered = false;
 
