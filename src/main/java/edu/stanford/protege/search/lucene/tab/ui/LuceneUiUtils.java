@@ -116,7 +116,7 @@ public class LuceneUiUtils {
             }
             else {
             	String s = literal.getLiteral();
-                doc.add(new TextField(IndexField.ANNOTATION_TEXT, strip(s), Store.YES));
+                doc.add(new StringField(IndexField.ANNOTATION_TEXT, strip(s), Store.YES));
                 doc.add(new StringField(IndexField.ANNOTATION_FULL_TEXT, 
                 		s.trim().toLowerCase(), Store.YES));
             }
