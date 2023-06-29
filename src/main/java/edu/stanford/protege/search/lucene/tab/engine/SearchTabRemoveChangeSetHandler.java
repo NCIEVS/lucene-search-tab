@@ -2,12 +2,17 @@ package edu.stanford.protege.search.lucene.tab.engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.lucene.index.Term;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.search.SearchInput;
+import org.protege.editor.owl.model.search.SearchTerm;
 import org.protege.editor.search.lucene.IndexField;
+import org.protege.editor.search.lucene.LuceneStringParser;
 import org.protege.editor.search.lucene.RemoveChangeSetHandler;
 import org.semanticweb.owlapi.model.HasFiller;
 import org.semanticweb.owlapi.model.IRI;
@@ -109,7 +114,12 @@ public class SearchTabRemoveChangeSetHandler extends RemoveChangeSetHandler impl
     					terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, literal.getLiteral()));
     				}
     				else {
-    					terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
+    					
+    					StringTokenizer st = new StringTokenizer(strip(literal.getLiteral()), " ");
+						while (st.hasMoreTokens()) {
+							terms.add(new Term(IndexField.ANNOTATION_TEXT, st.nextToken()));
+						}
+    					//terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
     					terms.add(new Term(IndexField.ANNOTATION_FULL_TEXT, 
     							literal.getLiteral().trim().toLowerCase()));
     				}
@@ -137,7 +147,11 @@ public class SearchTabRemoveChangeSetHandler extends RemoveChangeSetHandler impl
     						terms.add(new Term(IndexField.ANNOTATION_VALUE_IRI, literal.getLiteral()));
     					}
     					else {
-    						terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
+    						StringTokenizer st = new StringTokenizer(strip(literal.getLiteral()), " ");
+    						while (st.hasMoreTokens()) {
+    							terms.add(new Term(IndexField.ANNOTATION_TEXT, st.nextToken()));
+    						}
+    						//terms.add(new Term(IndexField.ANNOTATION_TEXT, strip(literal.getLiteral())));
     						terms.add(new Term(IndexField.ANNOTATION_FULL_TEXT, 
     								literal.getLiteral().trim().toLowerCase()));
     					}
