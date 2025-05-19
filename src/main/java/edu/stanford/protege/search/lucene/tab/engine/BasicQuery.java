@@ -207,7 +207,8 @@ public abstract class BasicQuery implements SearchTabQuery {
         			// ignore stop words
         		} else {
         			builder.add(LuceneUtils.createTermQuery(IndexField.ANNOTATION_IRI, property.getIRI().toString()), Occur.MUST);
-        			builder.add(qp, Occur.MUST);
+        			builder.add(LuceneUtils.createLikeQuery(IndexField.ANNOTATION_TEXT, term), Occur.MUST);
+        			//builder.add(qp, Occur.MUST);
         		}
         	}
         	return builder.build();
